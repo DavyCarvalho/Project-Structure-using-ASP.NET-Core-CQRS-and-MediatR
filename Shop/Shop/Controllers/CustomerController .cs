@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Domain.Commands.Requests;
 using Shop.Domain.Handlers;
 using Shop.Domain.Queries.Requests;
@@ -11,19 +12,19 @@ namespace Shop.Controllers
     {
         [HttpPost]
         [Route("")]
-        public IActionResult Create([FromServices] ICreateCustomerHandler handler,
+        public IActionResult Create([FromServices] IMediator mediator,
                                     [FromBody] CreateCustomerRequest command)
         {
-            var response = handler.Handle(command);
+            var response = mediator.Send(command);
             return Ok(response);
         }
 
         [HttpGet]
         [Route("")]
-        public IActionResult GetById([FromServices] IFindCustomerByIdHandler handler,
+        public IActionResult GetById([FromServices] IMediator mediator,
                                      [FromQuery] FindCustomerByIdRequest command)
         {
-            var result = handler.Handle(command);
+            var result = mediator.Send(command);
             return Ok(result);
         }
     }
